@@ -21,6 +21,8 @@
  */
 #pragma once
 
+#define CONFIG_EXAMPLES_DIR "Creality/Ender-5/BigTreeTech SKR Mini E3 2.0"
+
 /**
  * Configuration_adv.h
  *
@@ -395,7 +397,7 @@
  * The fan turns on automatically whenever any driver is enabled and turns
  * off (or reduces to idle speed) shortly after drivers are turned off.
  */
-//#define USE_CONTROLLER_FAN
+#define USE_CONTROLLER_FAN
 #if ENABLED(USE_CONTROLLER_FAN)
 //#define CONTROLLER_FAN_PIN -1        // Set a custom pin for the controller fan
 //#define CONTROLLER_FAN_USE_Z_ONLY    // With this option only the Z axis is considered
@@ -404,7 +406,7 @@
 #define CONTROLLERFAN_SPEED_ACTIVE 255 // (0-255) Active speed, used when any motor is enabled
 #define CONTROLLERFAN_SPEED_IDLE 0     // (0-255) Idle speed, used when motors are disabled
 #define CONTROLLERFAN_IDLE_TIME 60     // (seconds) Extra time to keep the fan running after disabling motors
-//#define CONTROLLER_FAN_EDITABLE      // Enable M710 configurable settings
+#define CONTROLLER_FAN_EDITABLE        // Enable M710 configurable settings
 #if ENABLED(CONTROLLER_FAN_EDITABLE)
 #define CONTROLLER_FAN_MENU // Enable the Controller Fan submenu
 #endif
@@ -515,9 +517,9 @@
 //#define CASE_LIGHT_USE_NEOPIXEL           // Use NeoPixel LED as case light, requires NEOPIXEL_LED.
 #if ENABLED(CASE_LIGHT_USE_NEOPIXEL)
 #define CASE_LIGHT_NEOPIXEL_COLOR \
-   {                              \
-      255, 255, 255, 255          \
-   } // { Red, Green, Blue, White }
+  {                               \
+    255, 255, 255, 255            \
+  } // { Red, Green, Blue, White }
 #endif
 #endif
 
@@ -640,6 +642,9 @@
 
 // Default x offset in duplication mode (typically set to half print bed width)
 #define DEFAULT_DUPLICATION_X_OFFSET 100
+
+// Default action to execute following M605 mode change commands. Typically G28X to apply new mode.
+//#define EVENT_GCODE_IDEX_AFTER_MODECHANGE "G28X"
 #endif
 
 // Activate a solenoid on the active extruder with M380. Disable all with M381.
@@ -657,17 +662,17 @@
 //#define SENSORLESS_BACKOFF_MM  { 2, 2 }     // (mm) Backoff from endstops before sensorless homing
 
 #define HOMING_BUMP_MM \
-   {                   \
-      5, 5, 2          \
-   } // (mm) Backoff from endstops after first bump
+  {                    \
+    5, 5, 2            \
+  } // (mm) Backoff from endstops after first bump
 #define HOMING_BUMP_DIVISOR \
-   {                        \
-      2, 2, 4               \
-   } // Re-Bump Speed Divisor (Divides the Homing Feedrate)
+  {                         \
+    2, 2, 4                 \
+  } // Re-Bump Speed Divisor (Divides the Homing Feedrate)
 
 //#define HOMING_BACKOFF_POST_MM { 2, 2, 2 }  // (mm) Backoff from endstops after homing
 
-//#define QUICK_HOME                          // If G28 contains XY do a diagonal move first
+#define QUICK_HOME // If G28 contains XY do a diagonal move first
 //#define HOME_Y_BEFORE_X                     // If G28 contains XY home Y before X
 //#define HOME_Z_FIRST                        // Home Z first. Requires a Z-MIN endstop (not a probe).
 //#define CODEPENDENT_XY_HOMING               // If X/Y can't home without homing Y/X first
@@ -784,10 +789,10 @@
 // Define Stepper XY positions for Z1, Z2, Z3 corresponding to
 // the Z screw positions in the bed carriage.
 // Define one position per Z stepper in stepper driver order.
-#define Z_STEPPER_ALIGN_STEPPER_XY                    \
-   {                                                  \
-      {210.7, 102.5}, {152.6, 220.0}, { 94.5, 102.5 } \
-   }
+#define Z_STEPPER_ALIGN_STEPPER_XY                  \
+  {                                                 \
+    {210.7, 102.5}, {152.6, 220.0}, { 94.5, 102.5 } \
+  }
 #else
 // Amplification factor. Used to scale the correction step up or down in case
 // the stepper (spindle) position is farther out than the test point.
@@ -796,7 +801,7 @@
 
 // On a 300mm bed a 5% grade would give a misalignment of ~1.5cm
 #define G34_MAX_GRADE 5              // (%) Maximum incline that G34 will handle
-#define Z_STEPPER_ALIGN_ITERATIONS 5 // Number of iterations to apply during alignment
+#define Z_STEPPER_ALIGN_ITERATIONS 3 // Number of iterations to apply during alignment
 #define Z_STEPPER_ALIGN_ACC 0.02     // Stop iterating early if the accuracy is better than this
 #define RESTORE_LEVELING_AFTER_G34   // Restore leveling after G34 is done?
 // After G34, re-home Z (G28 Z) or just calculate it from the last probe heights?
@@ -811,10 +816,10 @@
 #if ENABLED(ASSISTED_TRAMMING)
 
 // Define positions for probing points, use the hotend as reference not the sensor.
-#define TRAMMING_POINT_XY                          \
-   {                                               \
-      {20, 20}, {200, 20}, {200, 200}, { 20, 200 } \
-   }
+#define TRAMMING_POINT_XY                        \
+  {                                              \
+    {20, 20}, {200, 20}, {200, 200}, { 20, 200 } \
+  }
 
 // Define positions names for probing points.
 #define TRAMMING_POINT_NAME_1 "Front-Left"
@@ -841,10 +846,10 @@
 
 // @section motion
 
-#define AXIS_RELATIVE_MODES      \
-   {                             \
-      false, false, false, false \
-   }
+#define AXIS_RELATIVE_MODES    \
+  {                            \
+    false, false, false, false \
+  }
 
 // Add a Duplicate option for well-separated conjoined nozzles
 //#define MULTI_NOZZLE_DUPLICATION
@@ -910,9 +915,9 @@
 // Define values for backlash distance and correction.
 // If BACKLASH_GCODE is enabled these values are the defaults.
 #define BACKLASH_DISTANCE_MM \
-   {                         \
-      0, 0, 0                \
-   }                            // (mm)
+  {                          \
+    0, 0, 0                  \
+  }                             // (mm)
 #define BACKLASH_CORRECTION 0.0 // 0.0 = no correction; 1.0 = full correction
 
 // Set BACKLASH_SMOOTHING_MM to spread backlash correction over multiple segments
@@ -971,13 +976,13 @@
 
 // The true location and dimension the cube/bolt/washer on the bed.
 #define CALIBRATION_OBJECT_CENTER \
-   {                              \
-      264.0, -22.0, -2.0          \
-   } // mm
+  {                               \
+    264.0, -22.0, -2.0            \
+  } // mm
 #define CALIBRATION_OBJECT_DIMENSIONS \
-   {                                  \
-      10.0, 10.0, 10.0                \
-   } // mm
+  {                                   \
+    10.0, 10.0, 10.0                  \
+  } // mm
 
 // Comment out any sides which are unreachable by the probe. For best
 // auto-calibration results, all sides must be reachable.
@@ -1019,10 +1024,10 @@
 //#define MICROSTEP32 HIGH,LOW,HIGH
 
 // Microstep settings (Requires a board with pins named X_MS1, X_MS2, etc.)
-#define MICROSTEP_MODES      \
-   {                         \
-      16, 16, 16, 16, 16, 16 \
-   } // [1,2,4,8,16]
+#define MICROSTEP_MODES    \
+  {                        \
+    16, 16, 16, 16, 16, 16 \
+  } // [1,2,4,8,16]
 
 /**
  *  @section  stepper motor current
@@ -1058,10 +1063,10 @@
 
 // Actual motor currents in Amps. The number of entries must match DIGIPOT_I2C_NUM_CHANNELS.
 // These correspond to the physical drivers, so be mindful if the order is changed.
-#define DIGIPOT_I2C_MOTOR_CURRENTS           \
-   {                                         \
-      1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 \
-   } // AZTEEG_X3_PRO
+#define DIGIPOT_I2C_MOTOR_CURRENTS         \
+  {                                        \
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 \
+  } // AZTEEG_X3_PRO
 
 //#define DIGIPOT_USE_RAW_VALUES    // Use DIGIPOT_MOTOR_CURRENT raw wiper values (instead of A4988 motor currents)
 
@@ -1086,10 +1091,10 @@
 // @section lcd
 
 #if EITHER(IS_ULTIPANEL, EXTENSIBLE_UI)
-#define MANUAL_FEEDRATE                \
-   {                                   \
-      50 * 60, 50 * 60, 4 * 60, 2 * 60 \
-   }                              // (mm/min) Feedrates for manual moves along X, Y, Z, E from panel
+#define MANUAL_FEEDRATE              \
+  {                                  \
+    50 * 60, 50 * 60, 4 * 60, 2 * 60 \
+  }                               // (mm/min) Feedrates for manual moves along X, Y, Z, E from panel
 #define SHORT_MANUAL_Z_MOVE 0.025 // (mm) Smallest manual Z move (< 0.1mm)
 #if IS_ULTIPANEL
 #define MANUAL_E_MOVES_RELATIVE // Display extruder move distance rather than "position"
@@ -1118,11 +1123,12 @@
 //#define PROBE_OFFSET_WIZARD
 #if ENABLED(PROBE_OFFSET_WIZARD)
 #define PROBE_OFFSET_START -4.0 // Estimated nozzle-to-probe Z offset, plus a little extra
+//#define PROBE_OFFSET_WIZARD_XY_POS XY_CENTER // Set a convenient position to do the measurement
 #endif
 #endif
 
 // Include a page of printer information in the LCD Main Menu
-//#define LCD_INFO_MENU
+#define LCD_INFO_MENU
 #if ENABLED(LCD_INFO_MENU)
 //#define LCD_PRINTER_INFO_IS_BOOTSCREEN // Show bootscreen(s) instead of Printer Info pages
 #endif
@@ -1171,7 +1177,7 @@
 //#define LCD_TIMEOUT_TO_STATUS 15000
 
 // Add an 'M73' G-code to set the current percentage
-//#define LCD_SET_PROGRESS_MANUALLY
+#define LCD_SET_PROGRESS_MANUALLY
 
 // Show the E position (filament used) during printing
 //#define LCD_SHOW_E_TOTAL
@@ -1225,6 +1231,8 @@
 
 //#define MENU_ADDAUTOSTART               // Add a menu option to run auto#.g files
 
+//#define BROWSE_MEDIA_ON_INSERT          // Open the file browser when media is inserted
+
 #define EVENT_GCODE_SD_ABORT "G28XY" // G-code to run on SD Abort Print (e.g., "G28XY" or "G27")
 
 #if ENABLED(PRINTER_EVENT_LEDS)
@@ -1247,7 +1255,8 @@
 //#define POWER_LOSS_ZRAISE       2 // (mm) Z axis raise on resume (on power loss with UPS)
 //#define POWER_LOSS_PIN         44 // Pin to detect power loss. Set to -1 to disable default pin on boards without module.
 //#define POWER_LOSS_STATE     HIGH // State of pin indicating power loss
-//#define POWER_LOSS_PULL           // Set pullup / pulldown as appropriate
+//#define POWER_LOSS_PULLUP         // Set pullup / pulldown as appropriate for your sensor
+//#define POWER_LOSS_PULLDOWN
 //#define POWER_LOSS_PURGE_LEN   20 // (mm) Length of filament to purge on resume
 //#define POWER_LOSS_RETRACT_LEN 10 // (mm) Length of filament to retract on fail. Requires backup power.
 
@@ -1279,16 +1288,16 @@
    *  - SDSORT_CACHE_NAMES will retain the sorted file listing in RAM. (Expensive!)
    *  - SDSORT_DYNAMIC_RAM only uses RAM when the SD menu is visible. (Use with caution!)
    */
-//#define SDCARD_SORT_ALPHA
+#define SDCARD_SORT_ALPHA
 
 // SD Card Sorting options
 #if ENABLED(SDCARD_SORT_ALPHA)
 #define SDSORT_LIMIT 40          // Maximum number of sorted items (10-256). Costs 27 bytes each.
 #define FOLDER_SORTING -1        // -1=above  0=none  1=below
 #define SDSORT_GCODE false       // Allow turning sorting on/off with LCD and M34 G-code.
-#define SDSORT_USES_RAM false    // Pre-allocate a static array for faster pre-sorting.
+#define SDSORT_USES_RAM true     // Pre-allocate a static array for faster pre-sorting.
 #define SDSORT_USES_STACK false  // Prefer the stack for pre-sorting to give back some SRAM. (Negated by next 2 options.)
-#define SDSORT_CACHE_NAMES false // Keep sorted items in RAM longer for speedy performance. Most expensive option.
+#define SDSORT_CACHE_NAMES true  // Keep sorted items in RAM longer for speedy performance. Most expensive option.
 #define SDSORT_DYNAMIC_RAM false // Use dynamic allocation (within SD menus). Least expensive option. Set SDSORT_LIMIT before use!
 #define SDSORT_CACHE_VFATS 2     // Maximum number of 13-byte VFAT entries to use for sorting. \
                                  // Note: Only affects SCROLL_LONG_FILENAMES with SDSORT_CACHE_NAMES but not SDSORT_DYNAMIC_RAM.
@@ -1296,10 +1305,10 @@
 
 // Allow international symbols in long filenames. To display correctly, the
 // LCD's font must contain the characters. Check your selected LCD language.
-#define UTF_FILENAME_SUPPORT
+//#define UTF_FILENAME_SUPPORT
 
 // This allows hosts to request long names for files and folders with M33
-//#define LONG_FILENAME_HOST_SUPPORT
+#define LONG_FILENAME_HOST_SUPPORT
 
 // Enable this option to scroll long filenames in the SD card menu
 #define SCROLL_LONG_FILENAMES
@@ -1788,15 +1797,15 @@
 #if ENABLED(PROBE_TEMP_COMPENSATION)
 // Park position to wait for probe cooldown
 #define PTC_PARK_POS \
-   {                 \
-      0, 0, 100      \
-   }
+  {                  \
+    0, 0, 100        \
+  }
 
 // Probe position to probe and wait for probe to reach target temperature
 #define PTC_PROBE_POS \
-   {                  \
-      90, 100         \
-   }
+  {                   \
+    90, 100           \
+  }
 
 // Enable additional compensation using hotend temperature
 // Note: this values cannot be calibrated automatically but have to be set manually
@@ -1845,7 +1854,7 @@
 //
 // G2/G3 Arc Support
 //
-#define ARC_SUPPORT // Disable this feature to save ~3226 bytes
+//#define ARC_SUPPORT               // Disable this feature to save ~3226 bytes
 #if ENABLED(ARC_SUPPORT)
 #define MM_PER_ARC_SEGMENT 1 // (mm) Length (or minimum length) of each arc segment
 //#define ARC_SEGMENTS_PER_R    1 // Max segment length, MM_PER = Min
@@ -1998,7 +2007,7 @@
  * Currently handles M108, M112, M410, M876
  * NOTE: Not yet implemented for all platforms.
  */
-//#define EMERGENCY_PARSER
+#define EMERGENCY_PARSER
 
 // Bad Serial-connections can miss a received command by sending an 'ok'
 // Therefore some clients abort after 30 seconds in a timeout.
@@ -2124,10 +2133,10 @@
    */
 //#define TOOLCHANGE_PARK
 #if ENABLED(TOOLCHANGE_PARK)
-#define TOOLCHANGE_PARK_XY           \
-   {                                 \
-      X_MIN_POS + 10, Y_MIN_POS + 10 \
-   }
+#define TOOLCHANGE_PARK_XY         \
+  {                                \
+    X_MIN_POS + 10, Y_MIN_POS + 10 \
+  }
 #define TOOLCHANGE_PARK_XY_FEEDRATE 6000 // (mm/min)
 //#define TOOLCHANGE_PARK_X_ONLY          // X axis only move
 //#define TOOLCHANGE_PARK_Y_ONLY          // Y axis only move
@@ -2144,14 +2153,14 @@
  * Requires NOZZLE_PARK_FEATURE.
  * This feature is required for the default FILAMENT_RUNOUT_SCRIPT.
  */
-//#define ADVANCED_PAUSE_FEATURE
+#define ADVANCED_PAUSE_FEATURE
 #if ENABLED(ADVANCED_PAUSE_FEATURE)
 #define PAUSE_PARK_RETRACT_FEEDRATE 60       // (mm/s) Initial retract feedrate.
 #define PAUSE_PARK_RETRACT_LENGTH 2          // (mm) Initial retract. \
                                              // This short retract is done immediately, before parking the nozzle.
 #define FILAMENT_CHANGE_UNLOAD_FEEDRATE 10   // (mm/s) Unload filament feedrate. This can be pretty fast.
 #define FILAMENT_CHANGE_UNLOAD_ACCEL 25      // (mm/s^2) Lower acceleration may allow a faster feedrate.
-#define FILAMENT_CHANGE_UNLOAD_LENGTH 100    // (mm) The length of filament for a complete unload.    \
+#define FILAMENT_CHANGE_UNLOAD_LENGTH 550    // (mm) The length of filament for a complete unload.    \
                                              //   For Bowden, the full length of the tube and nozzle. \
                                              //   For direct drive, the full length of the nozzle.    \
                                              //   Set to 0 for manual unloading.
@@ -2160,7 +2169,7 @@
                                              // 0 to disable start loading and skip to fast load only
 #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE 6 // (mm/s) Load filament feedrate. This can be pretty fast.
 #define FILAMENT_CHANGE_FAST_LOAD_ACCEL 25   // (mm/s^2) Lower acceleration may allow a faster feedrate.
-#define FILAMENT_CHANGE_FAST_LOAD_LENGTH 0   // (mm) Load length of filament, from extruder gear to nozzle. \
+#define FILAMENT_CHANGE_FAST_LOAD_LENGTH 350 // (mm) Load length of filament, from extruder gear to nozzle. \
                                              //   For Bowden, the full length of the tube and nozzle.       \
                                              //   For direct drive, the full length of the nozzle.
 //#define ADVANCED_PAUSE_CONTINUOUS_PURGE       // Purge continuously up to the purge length until interrupted.
@@ -2182,10 +2191,10 @@
 #define FILAMENT_CHANGE_ALERT_BEEPS 10 // Number of alert beeps to play when a response is needed.
 #define PAUSE_PARK_NO_STEPPER_TIMEOUT  // Enable for XYZ steppers to stay powered on during filament change.
 
-//#define PARK_HEAD_ON_PAUSE                    // Park the nozzle during pause and filament change.
-//#define HOME_BEFORE_FILAMENT_CHANGE           // If needed, home before parking for filament change
+#define PARK_HEAD_ON_PAUSE          // Park the nozzle during pause and filament change.
+#define HOME_BEFORE_FILAMENT_CHANGE // If needed, home before parking for filament change
 
-//#define FILAMENT_LOAD_UNLOAD_GCODES           // Add M701/M702 Load/Unload G-codes, plus Load/Unload in the LCD Prepare menu.
+#define FILAMENT_LOAD_UNLOAD_GCODES // Add M701/M702 Load/Unload G-codes, plus Load/Unload in the LCD Prepare menu.
 //#define FILAMENT_UNLOAD_ALL_EXTRUDERS         // Allow M702 to unload all extruders above a minimum target temp (as set by M302)
 #endif
 
@@ -2326,9 +2335,9 @@
 #define INTERPOLATE true
 
 #if AXIS_IS_TMC(X)
-#define X_CURRENT 600            // (mA) RMS current. Multiply by 1.414 for peak current.
-#define X_CURRENT_HOME X_CURRENT // (mA) RMS current for sensorless homing
-#define X_MICROSTEPS 16          // 0..256
+#define X_CURRENT 600                  // (mA) RMS current. Multiply by 1.414 for peak current.
+#define X_CURRENT_HOME (X_CURRENT / 2) // (mA) RMS current for sensorless homing
+#define X_MICROSTEPS 16                // 0..256
 #define X_RSENSE 0.11
 #define X_CHAIN_POS -1 // -1..0: Not chained. 1: MCU MOSI connected. 2: Next in chain, ...
 //#define X_INTERPOLATE  true      // Enable to override 'INTERPOLATE' for the X axis
@@ -2345,7 +2354,7 @@
 
 #if AXIS_IS_TMC(Y)
 #define Y_CURRENT 650
-#define Y_CURRENT_HOME Y_CURRENT
+#define Y_CURRENT_HOME (Y_CURRENT / 2)
 #define Y_MICROSTEPS 16
 #define Y_RSENSE 0.11
 #define Y_CHAIN_POS -1
@@ -2504,14 +2513,14 @@
    * on the same serial port, either here or in your board's pins file.
    */
 #define X_SLAVE_ADDRESS 0
-#define Y_SLAVE_ADDRESS 0
-#define Z_SLAVE_ADDRESS 0
+#define Y_SLAVE_ADDRESS 2
+#define Z_SLAVE_ADDRESS 1
 #define X2_SLAVE_ADDRESS 0
 #define Y2_SLAVE_ADDRESS 0
 #define Z2_SLAVE_ADDRESS 0
 #define Z3_SLAVE_ADDRESS 0
 #define Z4_SLAVE_ADDRESS 0
-#define E0_SLAVE_ADDRESS 0
+#define E0_SLAVE_ADDRESS 3
 #define E1_SLAVE_ADDRESS 0
 #define E2_SLAVE_ADDRESS 0
 #define E3_SLAVE_ADDRESS 0
@@ -2644,16 +2653,16 @@
 
 #if EITHER(SENSORLESS_HOMING, SENSORLESS_PROBING)
 // TMC2209: 0...255. TMC2130: -64...63
-#define X_STALL_SENSITIVITY 8
+#define X_STALL_SENSITIVITY 75
 #define X2_STALL_SENSITIVITY X_STALL_SENSITIVITY
-#define Y_STALL_SENSITIVITY 8
+#define Y_STALL_SENSITIVITY 75
 #define Y2_STALL_SENSITIVITY Y_STALL_SENSITIVITY
 //#define Z_STALL_SENSITIVITY  8
 //#define Z2_STALL_SENSITIVITY Z_STALL_SENSITIVITY
 //#define Z3_STALL_SENSITIVITY Z_STALL_SENSITIVITY
 //#define Z4_STALL_SENSITIVITY Z_STALL_SENSITIVITY
 //#define SPI_ENDSTOPS              // TMC2130 only
-//#define IMPROVE_HOMING_RELIABILITY
+#define IMPROVE_HOMING_RELIABILITY
 #endif
 
 /**
@@ -2672,7 +2681,7 @@
    * Beta feature!
    * Create a 50/50 square wave step pulse optimal for stepper drivers.
    */
-//#define SQUARE_WAVE_STEPPING
+#define SQUARE_WAVE_STEPPING
 
 /**
    * Enable M122 debugging command for TMC stepper drivers.
@@ -2692,8 +2701,8 @@
    * }
    */
 #define TMC_ADV() \
-   {              \
-   }
+  {               \
+  }
 
 #endif // HAS_TRINAMIC_CONFIG
 
@@ -3472,18 +3481,18 @@
 //#define INVERT_JOY_Z  // Enable if Z direction is reversed
 
 // Use M119 with JOYSTICK_DEBUG to find reasonable values after connecting:
-#define JOY_X_LIMITS                      \
-   {                                      \
-      5600, 8190 - 100, 8190 + 100, 10800 \
-   } // min, deadzone start, deadzone end, max
-#define JOY_Y_LIMITS                      \
-   {                                      \
-      5600, 8250 - 100, 8250 + 100, 11000 \
-   }
-#define JOY_Z_LIMITS                      \
-   {                                      \
-      4800, 8080 - 100, 8080 + 100, 11550 \
-   }
+#define JOY_X_LIMITS                    \
+  {                                     \
+    5600, 8190 - 100, 8190 + 100, 10800 \
+  } // min, deadzone start, deadzone end, max
+#define JOY_Y_LIMITS                    \
+  {                                     \
+    5600, 8250 - 100, 8250 + 100, 11000 \
+  }
+#define JOY_Z_LIMITS                    \
+  {                                     \
+    4800, 8080 - 100, 8080 + 100, 11550 \
+  }
 //#define JOYSTICK_DEBUG
 #endif
 
@@ -3500,7 +3509,7 @@
 #define GANTRY_CALIBRATION_FEEDRATE 500    // Feedrate for correction move
 //#define GANTRY_CALIBRATION_TO_MIN                 // Enable to calibrate Z in the MIN direction
 
-//#define GANTRY_CALIBRATION_SAFE_POSITION  { X_CENTER, Y_CENTER } // Safe position for nozzle
+//#define GANTRY_CALIBRATION_SAFE_POSITION XY_CENTER // Safe position for nozzle
 //#define GANTRY_CALIBRATION_XY_PARK_FEEDRATE 3000  // XY Park Feedrate - MMM
 //#define GANTRY_CALIBRATION_COMMANDS_PRE   ""
 #define GANTRY_CALIBRATION_COMMANDS_POST "G28" // G28 highly recommended to ensure an accurate position
@@ -3556,10 +3565,10 @@
  * Ethernet. Use M552 to enable and set the IP address.
  */
 #if HAS_ETHERNET
-#define MAC_ADDRESS                      \
-   {                                     \
-      0xDE, 0xAD, 0xBE, 0xEF, 0xF0, 0x0D \
-   } // A MAC address unique to your network
+#define MAC_ADDRESS                    \
+  {                                    \
+    0xDE, 0xAD, 0xBE, 0xEF, 0xF0, 0x0D \
+  } // A MAC address unique to your network
 #endif
 
 /**
@@ -3585,11 +3594,24 @@
 #endif
 
 /**
- * Průša Multi-Material Unit v2
+ * Průša Multi-Material Unit (MMU)
  * Enable in Configuration.h
+ *
+ * These devices allow a single stepper driver on the board to drive
+ * multi-material feeders with any number of stepper motors.
  */
-#if ENABLED(PRUSA_MMU2)
-
+#if HAS_PRUSA_MMU1
+/**
+   * This option only allows the multiplexer to switch on tool-change.
+   * Additional options to configure custom E moves are pending.
+   *
+   * Override the default DIO selector pins here, if needed.
+   * Some pins files may provide defaults for these pins.
+   */
+//#define E_MUX0_PIN 40  // Always Required
+//#define E_MUX1_PIN 42  // Needed for 3 to 8 inputs
+//#define E_MUX2_PIN 44  // Needed for 5 to 8 inputs
+#elif HAS_PRUSA_MMU2
 // Serial port used for communication with MMU2.
 // For AVR enable the UART port used for the MMU. (e.g., mmuSerial)
 // For 32-bit boards check your HAL for available serial ports. (e.g., Serial2)
@@ -3607,49 +3629,33 @@
 
 // Add an LCD menu for MMU2
 //#define MMU2_MENUS
-#if ENABLED(MMU2_MENUS)
+#if EITHER(MMU2_MENUS, HAS_PRUSA_MMU2S)
 // Settings for filament load / unload from the LCD menu.
 // This is for Průša MK3-style extruders. Customize for your hardware.
 #define MMU2_FILAMENTCHANGE_EJECT_FEED 80.0
 #define MMU2_LOAD_TO_NOZZLE_SEQUENCE \
-   {7.2, 1145},                      \
-       {14.4, 871},                  \
-       {36.0, 1393},                 \
-       {14.4, 871},                  \
-   {                                 \
-      50.0, 198                      \
-   }
+  {7.2, 1145},                       \
+      {14.4, 871},                   \
+      {36.0, 1393},                  \
+      {14.4, 871},                   \
+  {                                  \
+    50.0, 198                        \
+  }
 
 #define MMU2_RAMMING_SEQUENCE \
-   {1.0, 1000},               \
-       {1.0, 1500},           \
-       {2.0, 2000},           \
-       {1.5, 3000},           \
-       {2.5, 4000},           \
-       {-15.0, 5000},         \
-       {-14.0, 1200},         \
-       {-6.0, 600},           \
-       {10.0, 700},           \
-       {-10.0, 400},          \
-   {                          \
-      -50.0, 2000             \
-   }
-#endif
-
-/**
-   * MMU Extruder Sensor
-   *
-   * Support for a Průša (or other) IR Sensor to detect filament near the extruder
-   * and make loading more reliable. Suitable for an extruder equipped with a filament
-   * sensor less than 38mm from the gears.
-   *
-   * During loading the extruder will stop when the sensor is triggered, then do a last
-   * move up to the gears. If no filament is detected, the MMU2 can make some more attempts.
-   * If all attempts fail, a filament runout will be triggered.
-   */
-//#define MMU_EXTRUDER_SENSOR
-#if ENABLED(MMU_EXTRUDER_SENSOR)
-#define MMU_LOADING_ATTEMPTS_NR 5 // max. number of attempts to load filament if first load fail
+  {1.0, 1000},                \
+      {1.0, 1500},            \
+      {2.0, 2000},            \
+      {1.5, 3000},            \
+      {2.5, 4000},            \
+      {-15.0, 5000},          \
+      {-14.0, 1200},          \
+      {-6.0, 600},            \
+      {10.0, 700},            \
+      {-10.0, 400},           \
+  {                           \
+    -50.0, 2000               \
+  }
 #endif
 
 /**
@@ -3657,32 +3663,49 @@
    * This mode requires a MK3S extruder with a sensor at the extruder idler, like the MMU2S.
    * See https://help.prusa3d.com/en/guide/3b-mk3s-mk2-5s-extruder-upgrade_41560, step 11
    */
-//#define PRUSA_MMU2_S_MODE
-#if ENABLED(PRUSA_MMU2_S_MODE)
+#if HAS_PRUSA_MMU2S
 #define MMU2_C0_RETRY 5 // Number of retries (total time = timeout*retries)
 
 #define MMU2_CAN_LOAD_FEEDRATE 800 // (mm/min)
-#define MMU2_CAN_LOAD_SEQUENCE         \
-   {0.1, MMU2_CAN_LOAD_FEEDRATE},      \
-       {60.0, MMU2_CAN_LOAD_FEEDRATE}, \
-   {                                   \
-      -52.0, MMU2_CAN_LOAD_FEEDRATE    \
-   }
+#define MMU2_CAN_LOAD_SEQUENCE        \
+  {0.1, MMU2_CAN_LOAD_FEEDRATE},      \
+      {60.0, MMU2_CAN_LOAD_FEEDRATE}, \
+  {                                   \
+    -52.0, MMU2_CAN_LOAD_FEEDRATE     \
+  }
 
 #define MMU2_CAN_LOAD_RETRACT 6.0   // (mm) Keep under the distance between Load Sequence values
 #define MMU2_CAN_LOAD_DEVIATION 0.8 // (mm) Acceptable deviation
 
 #define MMU2_CAN_LOAD_INCREMENT 0.2 // (mm) To reuse within MMU2 module
-#define MMU2_CAN_LOAD_INCREMENT_SEQUENCE               \
-   {                                                   \
-      -MMU2_CAN_LOAD_INCREMENT, MMU2_CAN_LOAD_FEEDRATE \
-   }
+#define MMU2_CAN_LOAD_INCREMENT_SEQUENCE             \
+  {                                                  \
+    -MMU2_CAN_LOAD_INCREMENT, MMU2_CAN_LOAD_FEEDRATE \
+  }
+
+#else
+
+/**
+     * MMU1 Extruder Sensor
+     *
+     * Support for a Průša (or other) IR Sensor to detect filament near the extruder
+     * and make loading more reliable. Suitable for an extruder equipped with a filament
+     * sensor less than 38mm from the gears.
+     *
+     * During loading the extruder will stop when the sensor is triggered, then do a last
+     * move up to the gears. If no filament is detected, the MMU2 can make some more attempts.
+     * If all attempts fail, a filament runout will be triggered.
+     */
+//#define MMU_EXTRUDER_SENSOR
+#if ENABLED(MMU_EXTRUDER_SENSOR)
+#define MMU_LOADING_ATTEMPTS_NR 5 // max. number of attempts to load filament if first load fail
+#endif
 
 #endif
 
 //#define MMU2_DEBUG  // Write debug info to serial output
 
-#endif // PRUSA_MMU2
+#endif // HAS_PRUSA_MMU2
 
 /**
  * Advanced Print Counter settings

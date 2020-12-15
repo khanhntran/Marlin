@@ -21,6 +21,8 @@
  */
 #pragma once
 
+#define CONFIG_EXAMPLES_DIR "Creality/Ender-5/BigTreeTech SKR Mini E3 2.0"
+
 /**
  * Configuration.h
  *
@@ -88,10 +90,10 @@
 #define SHOW_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Bootscreen.h on startup.
-//#define SHOW_CUSTOM_BOOTSCREEN
+// #define SHOW_CUSTOM_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Statusscreen.h on the status screen.
-//#define CUSTOM_STATUS_SCREEN_IMAGE
+// #define CUSTOM_STATUS_SCREEN_IMAGE
 
 // @section machine
 
@@ -128,11 +130,11 @@
 
 // Choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-#define MOTHERBOARD BOARD_BTT_SKR_MINI_E3_V1_2
+#define MOTHERBOARD BOARD_BTT_SKR_MINI_E3_V2_0
 #endif
 
 // Name displayed in the LCD "Ready" message and Info menu
-//#define CUSTOM_MACHINE_NAME "3D Printer"
+#define CUSTOM_MACHINE_NAME "Ender-5"
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
@@ -158,33 +160,19 @@
 #endif
 
 /**
- * Průša MK2 Single Nozzle Multi-Material Multiplexer, and variants.
+ * Multi-Material Unit
+ * Set to one of these predefined models:
  *
- * This device allows one stepper driver on a control board to drive
- * two to eight stepper motors, one at a time, in a manner suitable
- * for extruders.
- *
- * This option only allows the multiplexer to switch on tool-change.
- * Additional options to configure custom E moves are pending.
- */
-//#define MK2_MULTIPLEXER
-#if ENABLED(MK2_MULTIPLEXER)
-// Override the default DIO selector pins here, if needed.
-// Some pins files may provide defaults for these pins.
-//#define E_MUX0_PIN 40  // Always Required
-//#define E_MUX1_PIN 42  // Needed for 3 to 8 inputs
-//#define E_MUX2_PIN 44  // Needed for 5 to 8 inputs
-#endif
-
-/**
- * Průša Multi-Material Unit v2
+ *   PRUSA_MMU1      : Průša MMU1 (The "multiplexer" version)
+ *   PRUSA_MMU2      : Průša MMU2
+ *   PRUSA_MMU2S     : Průša MMU2S (Requires MK3S extruder with motion sensor, EXTRUDERS = 5)
+ *   SMUFF_EMU_MMU2  : Technik Gegg SMUFF (Průša MMU2 emulation mode)
+ *   SMUFF_EMU_MMU2S : Technik Gegg SMUFF (Průša MMU2S emulation mode)
  *
  * Requires NOZZLE_PARK_FEATURE to park print head in case MMU unit fails.
- * Requires EXTRUDERS = 5
- *
- * For additional configuration see Configuration_adv.h
+ * See additional options in Configuration_adv.h.
  */
-//#define PRUSA_MMU2
+//#define MMU_MODEL PRUSA_MMU2
 
 // A dual extruder that uses a single stepper motor
 //#define SWITCHING_EXTRUDER
@@ -348,7 +336,7 @@
 //#define PSU_NAME "Power Supply"
 
 #if ENABLED(PSU_CONTROL)
-#define PSU_ACTIVE_STATE LOW // Set 'LOW' for ATX, 'HIGH' for X-Box
+#define PSU_ACTIVE_STATE HIGH // Set 'LOW' for ATX, 'HIGH' for X-Box
 
 //#define PSU_DEFAULT_OFF         // Keep power off until enabled directly with M80
 //#define PSU_POWERUP_DELAY 250   // (ms) Delay for the PSU to warm up to full power
@@ -407,8 +395,10 @@
  *    13 : 100k Hisens 3950  1% up to 300°C for hotend "Simple ONE " & "Hotend "All In ONE"
  *    15 : 100k thermistor calibration for JGAurora A5 hotend
  *    18 : ATC Semitec 204GT-2 (4.7k pullup) Dagoma.Fr - MKS_Base_DKU001327
- *    20 : Pt100 with circuit in the Ultimainboard V2.x with 5v excitation (AVR)
- *    21 : Pt100 with circuit in the Ultimainboard V2.x with 3.3v excitation (STM32 \ LPC176x....)
+ *    20 : Pt100 with circuit in the Ultimainboard V2.x with mainboard ADC reference voltage = INA826 amplifier-board supply voltage.
+ *         NOTES: (1) Must use an ADC input with no pullup. (2) Some INA826 amplifiers are unreliable at 3.3V so consider using sensor 147, 110, or 21.
+ *    21 : Pt100 with circuit in the Ultimainboard V2.x with 3.3v ADC reference voltage (STM32, LPC176x....) and 5V INA826 amplifier board supply.
+ *         NOTE: ADC pins are not 5V tolerant. Not recommended because it's possible to damage the CPU by going over 500°C.
  *    22 : 100k (hotend) with 4.7k pullup to 3.3V and 220R to analog input (as in GTM32 Pro vB)
  *    23 : 100k (bed) with 4.7k pullup to 3.3v and 220R to analog input (as in GTM32 Pro vB)
  *    30 : Kis3d Silicone heating mat 200W/300W with 6mm precision cast plate (EN AW 5083) NTC100K / B3950 (4.7k pullup)
@@ -496,7 +486,7 @@
 #define HEATER_5_MAXTEMP 275
 #define HEATER_6_MAXTEMP 275
 #define HEATER_7_MAXTEMP 275
-#define BED_MAXTEMP 150
+#define BED_MAXTEMP 125
 
 //===========================================================================
 //============================= PID Settings ================================
@@ -515,20 +505,21 @@
 //#define PID_PARAMS_PER_HOTEND // Uses separate PID parameters for each extruder (useful for mismatched extruders)
 // Set/get with gcode: M301 E[extruder number, 0-2]
 
+// Creality Ender-5
 #if ENABLED(PID_PARAMS_PER_HOTEND)
 // Specify between 1 and HOTENDS values per array.
 // If fewer than EXTRUDER values are provided, the last element will be repeated.
 #define DEFAULT_Kp_LIST \
   {                     \
-    22.20, 22.20        \
+    21.73, 21.73        \
   }
 #define DEFAULT_Ki_LIST \
   {                     \
-    1.08, 1.08          \
+    1.54, 1.54          \
   }
 #define DEFAULT_Kd_LIST \
   {                     \
-    114.00, 114.00      \
+    76.55, 76.55        \
   }
 #else
 #define DEFAULT_Kp 27.71
@@ -570,8 +561,6 @@
 //#define MIN_BED_POWER 0
 //#define PID_BED_DEBUG // Sends debug data to the serial port.
 
-// 120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
-// from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
 #define DEFAULT_bedKp 62.61
 #define DEFAULT_bedKi 11.16
 #define DEFAULT_bedKd 234.26
@@ -604,7 +593,7 @@
  * Note: For Bowden Extruders make this large enough to allow load/unload.
  */
 #define PREVENT_LENGTHY_EXTRUDE
-#define EXTRUDE_MAXLENGTH 200
+#define EXTRUDE_MAXLENGTH 600
 
 //===========================================================================
 //======================== Thermal Runaway Protection =======================
@@ -866,7 +855,7 @@
 #if DISABLED(CLASSIC_JERK)
 #define JUNCTION_DEVIATION_MM 0.08 // (mm) Distance from real junction edge
 #define JD_HANDLE_SMALL_SEGMENTS   // Use curvature estimation instead of just the junction angle \
-                                    // for small segments (< 1mm) with large junction angles (> 135°).
+                                   // for small segments (< 1mm) with large junction angles (> 135°).
 #endif
 
 /**
@@ -1040,7 +1029,7 @@
  */
 #define NOZZLE_TO_PROBE_OFFSET \
   {                            \
-    0, -42, -1.58              \
+    0, -42, -1.60              \
   }
 
 // Most probes should stay away from the edges of the bed, but
@@ -1177,8 +1166,8 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 225
-#define Y_BED_SIZE 225
+#define X_BED_SIZE 230
+#define Y_BED_SIZE 230
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS 0
@@ -1235,27 +1224,42 @@
 #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
 #define NUM_RUNOUT_SENSORS 1            // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
 
-#define FIL_RUNOUT_STATE LOW // Pin state indicating that filament is NOT present.
-#define FIL_RUNOUT_PULL      // Use internal pullup / pulldown for filament runout pins.
+#define FIL_RUNOUT_STATE HIGH // Pin state indicating that filament is NOT present.
+#define FIL_RUNOUT_PULLUP     // Use internal pullup for filament runout pins.
+//#define FIL_RUNOUT_PULLDOWN           // Use internal pulldown for filament runout pins.
 
 // Override individually if the runout sensors vary
 //#define FIL_RUNOUT1_STATE LOW
-//#define FIL_RUNOUT1_PULL
-//#define FIL_RUNOUT2_STATE LOW
-//#define FIL_RUNOUT2_PULL
-//#define FIL_RUNOUT3_STATE LOW
-//#define FIL_RUNOUT3_PULL
-//#define FIL_RUNOUT4_STATE LOW
-//#define FIL_RUNOUT4_PULL
-//#define FIL_RUNOUT5_STATE LOW
-//#define FIL_RUNOUT5_PULL
-//#define FIL_RUNOUT6_STATE LOW
-//#define FIL_RUNOUT6_PULL
-//#define FIL_RUNOUT7_STATE LOW
-//#define FIL_RUNOUT7_PULL
-//#define FIL_RUNOUT8_STATE LOW
-//#define FIL_RUNOUT8_PULL
+//#define FIL_RUNOUT1_PULLUP
+//#define FIL_RUNOUT1_PULLDOWN
 
+//#define FIL_RUNOUT2_STATE LOW
+//#define FIL_RUNOUT2_PULLUP
+//#define FIL_RUNOUT2_PULLDOWN
+
+//#define FIL_RUNOUT3_STATE LOW
+//#define FIL_RUNOUT3_PULLUP
+//#define FIL_RUNOUT3_PULLDOWN
+
+//#define FIL_RUNOUT4_STATE LOW
+//#define FIL_RUNOUT4_PULLUP
+//#define FIL_RUNOUT4_PULLDOWN
+
+//#define FIL_RUNOUT5_STATE LOW
+//#define FIL_RUNOUT5_PULLUP
+//#define FIL_RUNOUT5_PULLDOWN
+
+//#define FIL_RUNOUT6_STATE LOW
+//#define FIL_RUNOUT6_PULLUP
+//#define FIL_RUNOUT6_PULLDOWN
+
+//#define FIL_RUNOUT7_STATE LOW
+//#define FIL_RUNOUT7_PULLUP
+//#define FIL_RUNOUT7_PULLDOWN
+
+//#define FIL_RUNOUT8_STATE LOW
+//#define FIL_RUNOUT8_PULLUP
+//#define FIL_RUNOUT8_PULLDOWN
 // Set one or more commands to execute on filament runout.
 // (After 'M412 H' Marlin will ask the host to handle the process.)
 #define FILAMENT_RUNOUT_SCRIPT "M600"
@@ -1263,7 +1267,7 @@
 // After a runout is detected, continue printing this length of filament
 // before executing the runout script. Useful for a sensor at the end of
 // a feed tube. Requires 4 bytes SRAM per sensor, plus 4 bytes overhead.
-//#define FILAMENT_RUNOUT_DISTANCE_MM 25
+//#define FILAMENT_RUNOUT_DISTANCE_MM 7
 
 #ifdef FILAMENT_RUNOUT_DISTANCE_MM
 // Enable this option to use an encoder disc that toggles the runout pin
@@ -1360,7 +1364,7 @@
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
 
 // Set the number of grid points per dimension.
-#define GRID_MAX_POINTS_X 3
+#define GRID_MAX_POINTS_X 4
 #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
 // Probe along the Y axis, advancing X after each column
@@ -1370,7 +1374,7 @@
 
 // Beyond the probed grid, continue the implied tilt?
 // Default is to maintain the height of the nearest edge.
-//#define EXTRAPOLATE_BEYOND_GRID
+#define EXTRAPOLATE_BEYOND_GRID
 
 //
 // Experimental Subdivision of the grid by Catmull-Rom method.
@@ -1425,7 +1429,7 @@
 #if ENABLED(LCD_BED_LEVELING)
 #define MESH_EDIT_Z_STEP 0.025 // (mm) Step size while manually probing Z axis.
 #define LCD_PROBE_Z_RANGE 4    // (mm) Z Range centered on Z_MIN_POS for LCD Z adjustment
-//#define MESH_EDIT_MENU        // Add a menu to edit mesh points
+#define MESH_EDIT_MENU         // Add a menu to edit mesh points
 #endif
 
 // Add a menu item to move between bed corners for manual bed adjustment
@@ -1558,7 +1562,7 @@
 #define EEPROM_CHITCHAT    // Give feedback on EEPROM commands. Disable to save PROGMEM.
 #define EEPROM_BOOT_SILENT // Keep M503 quiet and only give errors during first load
 #if ENABLED(EEPROM_SETTINGS)
-//#define EEPROM_AUTO_INIT  // Init EEPROM automatically on any errors.
+#define EEPROM_AUTO_INIT // Init EEPROM automatically on any errors.
 #endif
 
 //
@@ -1605,7 +1609,7 @@
  *    P1  Raise the nozzle always to Z-park height.
  *    P2  Raise the nozzle by Z-park amount, limited to Z_MAX_POS.
  */
-//#define NOZZLE_PARK_FEATURE
+#define NOZZLE_PARK_FEATURE
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
 // Specify a park position as { X, Y, Z_raise }
@@ -2263,6 +2267,11 @@
 //#define DGUS_LCD_UI_HIPRECY
 
 //
+// CR-6 OEM touch screen. A DWIN display with touch.
+//
+//#define DGUS_LCD_UI_CREALITY_TOUCH
+
+//
 // Touch-screen LCD for Malyan M200/M300 printers
 //
 //#define MALYAN_LCD
@@ -2422,10 +2431,10 @@
 
 #define TOUCH_SCREEN_CALIBRATION
 
-//#define XPT2046_X_CALIBRATION 12316
-//#define XPT2046_Y_CALIBRATION -8981
-//#define XPT2046_X_OFFSET        -43
-//#define XPT2046_Y_OFFSET        257
+//#define TOUCH_CALIBRATION_X 12316
+//#define TOUCH_CALIBRATION_Y -8981
+//#define TOUCH_OFFSET_X        -43
+//#define TOUCH_OFFSET_Y        257
 
 #if ENABLED(TFT_COLOR_UI)
 //#define SINGLE_TOUCH_NAVIGATION
@@ -2521,11 +2530,11 @@
 // Support for Adafruit NeoPixel LED driver
 //#define NEOPIXEL_LED
 #if ENABLED(NEOPIXEL_LED)
-#define NEOPIXEL_TYPE NEO_GRBW // NEO_GRBW / NEO_GRB - four/three channel driver type (defined in Adafruit_NeoPixel.h)
-#define NEOPIXEL_PIN 4         // LED driving pin
+#define NEOPIXEL_TYPE NEO_GRB // NEO_GRBW / NEO_GRB - four/three channel driver type (defined in Adafruit_NeoPixel.h)
+//#define NEOPIXEL_PIN     4     // LED driving pin
 //#define NEOPIXEL2_TYPE NEOPIXEL_TYPE
 //#define NEOPIXEL2_PIN    5
-#define NEOPIXEL_PIXELS 30      // Number of LEDs in the strip. (Longest strip when NEOPIXEL2_SEPARATE is disabled.)
+#define NEOPIXEL_PIXELS 10      // Number of LEDs in the strip. (Longest strip when NEOPIXEL2_SEPARATE is disabled.)
 #define NEOPIXEL_IS_SEQUENTIAL  // Sequential display for temperature change - LED by LED. Disable to change all LEDs at once.
 #define NEOPIXEL_BRIGHTNESS 127 // Initial brightness (0-255)
 //#define NEOPIXEL_STARTUP_TEST  // Cycle through colors at startup
