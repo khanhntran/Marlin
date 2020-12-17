@@ -225,7 +225,7 @@ namespace Language_fr {
   PROGMEM Language_Str MSG_MOVE_E                          = _UxGT("Extrudeur");
   PROGMEM Language_Str MSG_MOVE_EN                         = _UxGT("Extrudeur *");
   PROGMEM Language_Str MSG_HOTEND_TOO_COLD                 = _UxGT("Buse trop froide");
-  PROGMEM Language_Str MSG_MOVE_Z_DIST                     = _UxGT("Déplacer %smm");
+  PROGMEM Language_Str MSG_MOVE_N_MM                       = _UxGT("Déplacer %smm");
   PROGMEM Language_Str MSG_MOVE_01MM                       = _UxGT("Déplacer 0.1mm");
   PROGMEM Language_Str MSG_MOVE_1MM                        = _UxGT("Déplacer 1mm");
   PROGMEM Language_Str MSG_MOVE_10MM                       = _UxGT("Déplacer 10mm");
@@ -281,8 +281,8 @@ namespace Language_fr {
   PROGMEM Language_Str MSG_TEMPERATURE                     = _UxGT("Température");
   PROGMEM Language_Str MSG_MOTION                          = _UxGT("Mouvement");
   PROGMEM Language_Str MSG_FILAMENT                        = _UxGT("Filament");
-  PROGMEM Language_Str MSG_VOLUMETRIC_ENABLED              = _UxGT("E en mm³");
-  PROGMEM Language_Str MSG_VOLUMETRIC_LIMIT                = _UxGT("Limite en mm³");
+  PROGMEM Language_Str MSG_VOLUMETRIC_ENABLED              = _UxGT("E en mm") SUPERSCRIPT_THREE;
+  PROGMEM Language_Str MSG_VOLUMETRIC_LIMIT                = _UxGT("Limite en mm") SUPERSCRIPT_THREE;
   PROGMEM Language_Str MSG_VOLUMETRIC_LIMIT_E              = _UxGT("Limite *");
   PROGMEM Language_Str MSG_FILAMENT_DIAM                   = _UxGT("Diamètre fil.");
   PROGMEM Language_Str MSG_FILAMENT_DIAM_E                 = _UxGT("Diamètre fil. *");
@@ -570,4 +570,13 @@ namespace Language_fr {
   PROGMEM Language_Str MSG_SERVICE_IN                      = _UxGT("  dans:");
   PROGMEM Language_Str MSG_BACKLASH_CORRECTION             = _UxGT("Correction");
   PROGMEM Language_Str MSG_BACKLASH_SMOOTHING              = _UxGT("Lissage");
+
+  #if ENABLED(TOUCH_SCREEN_CALIBRATION)
+    PROGMEM Language_Str MSG_TOP_LEFT                      = _UxGT("Haut à Gauche");
+    PROGMEM Language_Str MSG_BOTTOM_LEFT                   = _UxGT("Bas à Gauche");
+    PROGMEM Language_Str MSG_TOP_RIGHT                     = _UxGT("Haut à Droite");
+    PROGMEM Language_Str MSG_BOTTOM_RIGHT                  = _UxGT("Bas à Droite");
+    PROGMEM Language_Str MSG_CALIBRATION_COMPLETED         = _UxGT("Calibration Terminée");
+    PROGMEM Language_Str MSG_CALIBRATION_FAILED            = _UxGT("Échec de l'étalonnage");
+  #endif
 }
